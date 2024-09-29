@@ -18,10 +18,6 @@ const Sidebar = () => {
               <img src={logo} alt="logo" className="w-10 h-10 rounded-full" />
             </Link>
             <h1 className="font-bold text-gray-200 text-[15px] ml-3">HS</h1>
-            <i
-              className="bi bi-x cursor-pointer ml-28 lg:hidden"
-              onclick="openSidebar()"
-            />
           </div>
           <div className="my-2 bg-gray-600 h-[1px]" />
         </div>
