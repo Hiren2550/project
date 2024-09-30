@@ -7,6 +7,7 @@ import { selectCurrentUser } from "../features/auth/authSlice";
 import { api } from "../config";
 import PostSkeleton from "../Skeleton/PostSkeleton";
 import ImageSkeleton from "../Skeleton/ImageSkeleton";
+import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
   const currentuser = useSelector(selectCurrentUser);
@@ -43,6 +44,7 @@ const Post = ({ post }) => {
     }
 
     let newcomment = [...comment, data];
+    newcomment.reverse();
     setComment(newcomment);
   };
 
@@ -78,11 +80,13 @@ const Post = ({ post }) => {
         {/* Header */}
         <div className="flex items-center py-4 px-2">
           <div className="avatar placeholder ">
-            <div className="bg-slate-500 border flex items-center justify-center text-white h-12 w-12 rounded-full ">
-              <span className="text-3xl">
-                {post?.user?.username?.at(0).toUpperCase()}
-              </span>
-            </div>
+            <Link to={`/other-profile/${post?.user?.id}`}>
+              <div className="bg-slate-500 border flex items-center justify-center text-white h-12 w-12 rounded-full ">
+                <span className="text-3xl">
+                  {post?.user?.username?.at(0).toUpperCase()}
+                </span>
+              </div>
+            </Link>
           </div>
           <div className="ml-3">
             <p className="font-bold">{post?.user?.username}</p>

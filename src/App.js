@@ -20,6 +20,7 @@ function App() {
         <Route path="/sign-up" element={<Signuppage />} />
         <Route path="/sign-in" element={<Signinpage />} />
         <Route path="/profile" element={<Profilepage />} />
+        <Route path="/other-profile/:id" element={<Profilepage />} />
         <Route path="/user-post/:id" element={<UserPostListpage />} />
         <Route path="/create-post" element={<Createpostpage />} />
         <Route path="/about" element={<Aboutpage />} />
