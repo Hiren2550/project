@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import ImageSkeleton from "../Skeleton/ImageSkeleton";
 
 const About = () => {
+  const [loading, setLoading] = useState(true);
   return (
     <section className="bg-white">
       <div className="gap-14 items-center py-6 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-20 lg:px-6">
@@ -24,13 +26,16 @@ const About = () => {
           </p>
         </div>
         <div className="grid grid-cols-2 gap-4 mt-8">
+          {loading && <ImageSkeleton />}
           <img
             className="w-full rounded-lg"
+            onLoad={() => setLoading(false)}
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-2.png"
             alt="office content 1"
           />
           <img
             className="mt-4 w-full lg:mt-10 rounded-lg"
+            onLoad={() => setLoading(false)}
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-1.png"
             alt="office content 2"
           />

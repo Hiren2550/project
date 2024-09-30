@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import { api } from "../config";
 import PostListSkeleton from "../Skeleton/PostSkeleton";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
 
-const PostList = () => {
+const UserPostList = () => {
+  const currentuser = useSelector(selectCurrentUser);
+  const { token } = currentuser;
   const [posts, setPosts] = useState([]);
   const [load, setLoad] = useState(false);
+  const parmas = useParams();
 
   const getPosts = async () => {
     try {
       setLoad(true);
-      const res = await fetch(`${api.url}/posts`);
+      const res = await fetch(`${api.url}/users/${parmas.id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
       const data = await res.json();
       // console.log(data);
       setPosts(data.post);
@@ -45,4 +55,4 @@ const PostList = () => {
   );
 };
 
-export default PostList;
+export default UserPostList;

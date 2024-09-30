@@ -9,6 +9,7 @@ import Aboutpage from "./pages/Aboutpage";
 import Contactpage from "./pages/Contactpage";
 import Profilepage from "./pages/Profilepage";
 import Createpostpage from "./pages/Createpostpage";
+import UserPostListpage from "./pages/UserPostListpage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/sign-up" element={<Signuppage />} />
         <Route path="/sign-in" element={<Signinpage />} />
         <Route path="/profile" element={<Profilepage />} />
+        <Route path="/user-post/:id" element={<UserPostListpage />} />
         <Route path="/create-post" element={<Createpostpage />} />
         <Route path="/about" element={<Aboutpage />} />
         <Route path="/contact" element={<Contactpage />} />
