@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
 
-const Createpost = () => {
+const CreatePost = () => {
+  const currentuser = useSelector(selectCurrentUser);
+  const { token } = currentuser;
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
 
@@ -17,11 +21,15 @@ const Createpost = () => {
     if (image) {
       formData.append("image", image); // Append image file
     }
+    console.log(formData);
 
     try {
-      const response = await fetch("https://your-api-endpoint.com/upload", {
+      const response = await fetch("http://192.168.1.77:3000/api/posts", {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: token,
+        },
       });
 
       if (!response.ok) {
@@ -39,7 +47,7 @@ const Createpost = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto py-10 p-4 border rounded-lg shadow-md">
+    <div className="max-w-md mx-auto p-4 border rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-4">Create a Post</h2>
       <form onSubmit={handleSubmit}>
         <textarea
@@ -79,4 +87,4 @@ const Createpost = () => {
   );
 };
 
-export default Createpost;
+export default CreatePost;

@@ -1,8 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { loginUserAsync } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Signin = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -10,7 +13,7 @@ const Signin = () => {
     formState: { errors },
   } = useForm();
   const handleForm = (data) => {
-    console.log(data);
+    dispatch(loginUserAsync(data));
   };
   return (
     <div className="flex min-h-screen w-screen  items-center justify-center text-gray-600 bg-gray-50">

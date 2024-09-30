@@ -3,20 +3,47 @@ import { FcLike } from "react-icons/fc";
 import { CiHeart } from "react-icons/ci";
 import { FaRegComment } from "react-icons/fa";
 import { RiDeleteBack2Line } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
 
-const Post = ({ username, postImage, likes, caption, time, comments }) => {
+const Post = ({ post }) => {
+  const currentuser = useSelector(selectCurrentUser);
+
+  const { token } = currentuser;
   const [toggle, setToggle] = useState(false);
-  const [like, setLike] = useState(likes);
-  const [comment, setComment] = useState(comments);
+  const [like, setLike] = useState(post.post_likes.length);
+  const [comment, setComment] = useState(post.comments);
   const [commentData, setCommentData] = useState();
   const [commentToggle, setCommentToggle] = useState(false);
   const handleComment = () => {
     setCommentToggle(!commentToggle);
   };
-  const addComment = (e) => {
+  const addComment = (e, post_id) => {
+    const data = { comment: commentData };
     e.preventDefault();
-    console.log(commentData);
-    let newcomment = [...comment, { content: commentData }];
+    let time;
+    try {
+      clearTimeout(time);
+      time = setTimeout(async () => {
+        const res = await fetch(
+          `http://192.168.1.77:3000/api/comments/${post_id}`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const result = await res.json();
+        console.log(result);
+      }, 100);
+    } catch (error) {
+      console.error("Error in comment", error);
+    }
+
+    let newcomment = [...comment, data];
     setComment(newcomment);
   };
   const handleCommentDelete = (e, id) => {
@@ -26,8 +53,30 @@ const Post = ({ username, postImage, likes, caption, time, comments }) => {
     newcomment.splice(index, 1);
     setComment(newcomment);
   };
-  const handleLike = () => {
+  const handleLike = (e) => {
     setToggle(!toggle);
+    let time;
+    e.preventDefault();
+    try {
+      clearTimeout(time);
+
+      time = setTimeout(async () => {
+        const res = await fetch(
+          `http://192.168.1.77:3000/api/likes/post/${post.id}`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              Authorization: token,
+            },
+          }
+        );
+        const data = await res.json();
+        console.log(data);
+      }, 1000);
+    } catch (error) {
+      console.error("Error in like", error);
+    }
     if (!toggle) {
       setLike(like + 1);
     } else {
@@ -35,16 +84,18 @@ const Post = ({ username, postImage, likes, caption, time, comments }) => {
     }
   };
   return (
-    <div className="max-w-md mx-auto bg-white  rounded-lg shadow-sm my-5">
+    <div className="max-w-md mx-auto bg-white   my-5 py-2">
       {/* Header */}
-      <div className="flex items-center p-4">
+      <div className="flex items-center py-4 px-2">
         <div className="avatar placeholder ">
-          <div className="bg-neutral border flex items-center justify-center text-neutral-content h-12 w-12 rounded-full ">
-            <span className="text-3xl">{username.at(0).toUpperCase()}</span>
+          <div className="bg-slate-500 border flex items-center justify-center text-white h-12 w-12 rounded-full ">
+            <span className="text-3xl">
+              {post?.user?.username?.at(0).toUpperCase()}
+            </span>
           </div>
         </div>
         <div className="ml-3">
-          <p className="font-bold">{username}</p>
+          <p className="font-bold">{post?.user?.username}</p>
         </div>
       </div>
 
@@ -52,35 +103,40 @@ const Post = ({ username, postImage, likes, caption, time, comments }) => {
       <div className="bg-black">
         <img
           className="w-full object-cover"
-          src={postImage}
+          src={post?.image_url}
           alt="Post content"
         />
       </div>
 
       {/* Interaction Icons */}
-      <div className="flex justify-between items-center px-2 py-2">
-        <div className="flex space-x-3">
-          {!toggle && <CiHeart size={28} onClick={handleLike} />}
-          {toggle && <FcLike size={28} onClick={handleLike} />}
+      <div className="flex justify-between items-center  py-2 px-2">
+        <div className="flex space-x-3 justify-center items-center">
+          {!toggle && (
+            <CiHeart size={28} onClick={(e) => handleLike(e, post?.postd)} />
+          )}
+          {toggle && (
+            <FcLike size={28} onClick={(e) => handleLike(e, post?.id)} />
+          )}
 
           <FaRegComment size={26} onClick={handleComment} />
         </div>
       </div>
 
       {/* Likes and Caption */}
-      <div className="px-4 pb-2">
+      <div className=" pb-2 px-2">
         <p className="font-semibold">{like} likes</p>
         <p>
-          <span className="font-bold">{username}</span> {caption}
+          <span className="font-bold">{post?.user?.username}</span>{" "}
+          {post?.description}
         </p>
-        <p className="text-xs text-gray-500 uppercase tracking-wide">{time}</p>
+        <p className="text-xs text-gray-500 uppercase tracking-wide">{}</p>
       </div>
       {commentToggle && (
         <section className="bg-white  py-4 lg:py-2 antialiased max-w-md">
           <div className="max-w-2xl mx-auto px-4">
             <div className="flex justify-between mb-2">
               <h2 className="text-lg lg:text-2xl font-bold text-gray-900 ">
-                Comments ({comment?.length})
+                Comments ({comment.length})
               </h2>
             </div>
             <form className="mb-6">
@@ -101,7 +157,7 @@ const Post = ({ username, postImage, likes, caption, time, comments }) => {
               <button
                 disabled={!commentData}
                 type="submit"
-                onClick={(e) => addComment(e)}
+                onClick={(e) => addComment(e, post.id)}
                 className="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800"
               >
                 Post comment
@@ -141,7 +197,7 @@ const Post = ({ username, postImage, likes, caption, time, comments }) => {
                     {/* Dropdown menu */}
                   </footer>
                   <p className="text-gray-500 dark:text-gray-400">
-                    {comment.content}
+                    {comment.comment}
                   </p>
                   <div className="flex items-center mt-4 space-x-4">
                     <button

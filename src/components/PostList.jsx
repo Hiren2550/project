@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Post from "./Post";
 
 const PostList = () => {
@@ -32,19 +32,23 @@ const PostList = () => {
       comments: [{ content: "my hero" }],
     },
   ];
+  const [posts, setPosts] = useState([]);
+
+  const getPosts = async () => {
+    const res = await fetch("http://192.168.1.77:3000/api/posts");
+    const data = await res.json();
+    console.log(data);
+    setPosts(data.post);
+  };
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <div className="max-w-2xl mx-auto p-5">
       {/* Loop through the postData and render each post */}
-      {postData.map((post) => (
-        <Post
-          key={post.id}
-          username={post.userName}
-          postImage={post.imageUrl}
-          likes={post.likes}
-          caption={post.description}
-          comments={post.comments}
-        />
+      {posts.map((post) => (
+        <Post key={post.id} post={post} comments={post.comments} />
       ))}
     </div>
   );
