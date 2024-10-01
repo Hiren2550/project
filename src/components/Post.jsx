@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FcLike } from "react-icons/fc";
 import { CiHeart } from "react-icons/ci";
 import { FaRegComment } from "react-icons/fa";
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 const Post = ({ post }) => {
   const currentuser = useSelector(selectCurrentUser);
   const { token } = currentuser;
+  const { user } = currentuser;
   const [loading, setLoading] = useState(true);
   const [toggle, setToggle] = useState(false);
   const [like, setLike] = useState(post.post_likes.length);
@@ -72,13 +73,20 @@ const Post = ({ post }) => {
       setLike(like - 1);
     }
   };
-
+  useEffect(() => {
+    for (let i = 0; i < like; i++) {
+      const a = post.post_likes;
+      if (user.id === a[i].user_id) {
+        setToggle(true);
+      }
+    }
+  }, []);
   return (
     <>
-      <div className="max-w-md mx-auto bg-white   my-5 py-2">
+      <div className="max-w-md mx-auto bg-gray-100  my-5 py-1 border border-gray-400">
         {/* Header */}
         <div className="flex items-center py-4 px-2">
-          <div className="avatar placeholder ">
+          <div className="avatar placeholder hover:border hover:border-gray-800 rounded-full ">
             <Link to={`/other-profile/${post?.user?.id}`}>
               <div className="bg-slate-500 border flex items-center justify-center text-white h-12 w-12 rounded-full ">
                 <span className="text-3xl">
@@ -89,7 +97,9 @@ const Post = ({ post }) => {
           </div>
           <div className="ml-3">
             <Link to={`/other-profile/${post?.user?.id}`}>
-              <p className="font-bold">{post?.user?.username}</p>
+              <p className="font-bold hover:underline">
+                {post?.user?.username}
+              </p>
             </Link>
           </div>
         </div>

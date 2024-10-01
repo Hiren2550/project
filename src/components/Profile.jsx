@@ -61,7 +61,7 @@ const Profile = () => {
             <div className="ml-4 flex-grow mt-5">
               <h2 className="text-2xl font-bold">{user.username}</h2>
               <Link to={"/update-user"}>
-                <button className="mt-2 bg-blue-500 text-white rounded px-4 py-1">
+                <button className="mt-2 bg-blue-500 text-white rounded px-4 py-1 hover:underline">
                   Edit Profile
                 </button>
               </Link>

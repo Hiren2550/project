@@ -14,6 +14,7 @@ const PostList = () => {
       const data = await res.json();
       // console.log(data);
       setPosts(data.post);
+      console.log(data);
       setLoad(false);
     } catch (error) {
       console.log(error);

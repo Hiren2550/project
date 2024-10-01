@@ -8,7 +8,7 @@ const Createpostpage = () => {
       <div className="hidden lg:block md:col-span-1 ">
         <Sidebar />
       </div>
-      <div className="col-span-2 py-10 mx-auto">
+      <div className="col-span-1 py-10 ">
         <Createpost />
       </div>
     </div>
