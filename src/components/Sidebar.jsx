@@ -7,7 +7,10 @@ import { CiLogout } from "react-icons/ci";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { SlCallIn } from "react-icons/sl";
+import { useDispatch } from "react-redux";
+import { logOut } from "../features/auth/authSlice";
 const Sidebar = () => {
+  const dispatch = useDispatch();
   return (
     <>
       {/* component */}
@@ -65,8 +68,12 @@ const Sidebar = () => {
           </div>
         </Link>
 
-        <div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+        <div
+          className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white cursor-pointer"
+          onClick={() => dispatch(logOut())}
+        >
           <CiLogout size={28} />
+
           <span className="text-[15px] ml-4 text-gray-200 font-bold">
             Logout
           </span>

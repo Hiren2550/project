@@ -77,6 +77,7 @@ function App() {
             </PrivateRoute>
           }
         />
+
         <Route path="*" element={<Notfound />} />
       </Routes>
     </BrowserRouter>

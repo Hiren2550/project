@@ -3,7 +3,6 @@ import { createUser, loginUser } from "./authAPI";
 import { toast } from "react-toastify";
 
 const initialState = {
-  value: 0,
   currentUser: null,
   load: false,
   error: null,
@@ -31,10 +30,17 @@ export const loginUserAsync = createAsyncThunk(
     }
   }
 );
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logOut: (state) => {
+      state.currentUser = null;
+      state.loginUser = null;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(createUserAsync.pending, (state, action) => {
       state.load = true;
@@ -66,4 +72,5 @@ const authSlice = createSlice({
 export const selectCurrentUser = (state) => state.auth.currentUser;
 export const selectSignInError = (state) => state.auth.error;
 export const selectCreateUserStatus = (state) => state.auth.load;
+export const { logOut } = authSlice.actions;
 export default authSlice.reducer;

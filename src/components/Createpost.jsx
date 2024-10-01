@@ -3,9 +3,12 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 import { api } from "../config";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
+  const navigate = useNavigate();
   const currentuser = useSelector(selectCurrentUser);
+  const [loading, setLoading] = useState(false);
   const { token } = currentuser;
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -15,6 +18,7 @@ const CreatePost = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     // Create a FormData object to send data in multipart/form-data format
@@ -42,11 +46,19 @@ const CreatePost = () => {
         position: "top-right",
         theme: "dark",
       });
+
+      setLoading(false);
       // Reset the form or handle success as needed
       setContent("");
       setImage(null);
+      navigate("/profile");
     } catch (error) {
-      console.error("Error uploading post:", error);
+      // console.error("Error uploading post:", error);
+      toast.error("Error uploading post:", {
+        position: "top-right",
+        theme: "dark",
+      });
+      setLoading(false);
     }
   };
 
@@ -84,7 +96,7 @@ const CreatePost = () => {
           type="submit"
           className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300"
         >
-          Post
+          {loading ? "loading" : "Post"}
         </button>
       </form>
     </div>

@@ -17,6 +17,7 @@ const Post = ({ post }) => {
   const [comment, setComment] = useState(post.comments);
   const [commentData, setCommentData] = useState();
   const [commentToggle, setCommentToggle] = useState(false);
+  const [commentLikeToggle, setCommentLikeToggle] = useState(false);
   const handleComment = () => {
     setCommentToggle(!commentToggle);
   };
@@ -213,8 +214,24 @@ const Post = ({ post }) => {
                     </p>
                     <div className="flex items-center mt-4 gap-1">
                       <div>
-                        {/* {!toggle && <CiHeart size={18} />}
-                      {toggle && <FcLike size={18} />} */}
+                        {!commentLikeToggle && (
+                          <CiHeart
+                            className="cursor-pointer"
+                            size={18}
+                            onClick={() =>
+                              setCommentLikeToggle(!commentLikeToggle)
+                            }
+                          />
+                        )}
+                        {commentLikeToggle && (
+                          <FcLike
+                            className="cursor-pointer"
+                            size={18}
+                            onClick={() =>
+                              setCommentLikeToggle(!commentLikeToggle)
+                            }
+                          />
+                        )}
                       </div>
                       <button
                         type="button"
