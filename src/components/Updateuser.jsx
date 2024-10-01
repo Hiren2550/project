@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { selectCurrentUser } from "../features/auth/authSlice";
-import { useSelector } from "react-redux";
+import { selectCurrentUser, update } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import avtar from "../images/avtar.jpg";
 import { api } from "../config";
+import { VscGlobe } from "react-icons/vsc";
 
 const Updateuser = () => {
   const currentuser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
   const { token } = currentuser;
   const { user } = currentuser;
   const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
-    reset,
+
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -21,19 +23,30 @@ const Updateuser = () => {
       last_name: user.last_name,
       username: user.username,
       email: user.email,
-      password: user.password,
     },
   });
 
   const handleUpdate = async (data) => {
+    const userData = {
+      first_name: data?.first_name,
+      last_name: data?.last_name,
+      username: data?.username,
+      email: data?.email,
+    };
     setLoading(true);
     try {
-      const res = await fetch(`${api.url}/users/${currentuser.user.id}`, {
+      const res = await fetch(`${api.url}/users/update`, {
+        method: "PATCH",
         headers: {
+          "content-type": "application/json",
           Authorization: token,
         },
+        body: JSON.stringify(userData),
       });
-      const result = await res.json();
+      if (res.ok) {
+        const result = await res.json();
+        dispatch(update(result.data));
+      }
 
       setLoading(false);
     } catch (error) {
@@ -123,28 +136,6 @@ const Updateuser = () => {
               />
               <p className="mt-1 text-xs text-red-600">
                 {errors.email?.message}
-              </p>
-            </div>
-            <div>
-              <label className="text-gray-600 dark:text-gray-400">
-                Password
-              </label>
-              <input
-                className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow dark:bg-gray-600 dark:text-gray-100"
-                {...register("password", {
-                  required: { value: true, message: "password is required" },
-                  pattern: {
-                    value:
-                      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/,
-                    message: `- at least 8 characters\n
-                   - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number\n
-                   - Can contain special characters`,
-                  },
-                })}
-                type="password"
-              />
-              <p className="mt-1 text-xs text-red-600">
-                {errors.password?.message}
               </p>
             </div>
 

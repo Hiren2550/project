@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import Sidebar from "../components/Sidebar";
 import PostList from "../components/PostList";
-import { FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 const Homepage = () => {
   return (

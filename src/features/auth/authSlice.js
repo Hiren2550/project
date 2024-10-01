@@ -40,6 +40,9 @@ const authSlice = createSlice({
       state.loginUser = null;
       state.error = null;
     },
+    update: (state, action) => {
+      state.currentUser.user = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(createUserAsync.pending, (state, action) => {
@@ -72,5 +75,5 @@ const authSlice = createSlice({
 export const selectCurrentUser = (state) => state.auth.currentUser;
 export const selectSignInError = (state) => state.auth.error;
 export const selectCreateUserStatus = (state) => state.auth.load;
-export const { logOut } = authSlice.actions;
+export const { logOut, update } = authSlice.actions;
 export default authSlice.reducer;
