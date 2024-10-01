@@ -14,16 +14,25 @@ export function createUser(userData) {
   });
 }
 export function loginUser(userData) {
-  return new Promise(async (resolve) => {
-    const response = await fetch(`${api.url}/users/login`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(userData),
-      credentials: "include",
-    });
-    const data = await response.json();
-    resolve({ data });
+  return new Promise(async (resolve, reject) => {
+    try {
+      const response = await fetch(`${api.url}/users/login`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(userData),
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        resolve({ data });
+      } else {
+        let error = await response.json();
+        reject(error);
+      }
+    } catch (error) {
+      reject({ error });
+    }
   });
 }

@@ -1,8 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { loginUserAsync } from "../features/auth/authSlice";
-import { useDispatch } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
+import {
+  loginUserAsync,
+  selectCurrentUser,
+  selectSignInError,
+} from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signin = () => {
   const dispatch = useDispatch();
@@ -15,6 +19,11 @@ const Signin = () => {
   const handleForm = (data) => {
     dispatch(loginUserAsync(data));
   };
+  const currentUser = useSelector(selectCurrentUser);
+  const error = useSelector(selectSignInError);
+  if (currentUser) {
+    return <Navigate to={"/"} replace={true}></Navigate>;
+  }
   return (
     <div className="flex min-h-screen w-screen  items-center justify-center text-gray-600 bg-gray-50">
       <div className="relative">
@@ -201,6 +210,11 @@ const Signin = () => {
               </Link>
             </p>
           </div>
+          {error && (
+            <p className="mb-4 text-center text-xs text-red-500">
+              {error?.message}
+            </p>
+          )}
         </div>
         {/* /Register */}
       </div>

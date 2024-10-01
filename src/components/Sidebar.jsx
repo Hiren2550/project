@@ -6,6 +6,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { CiLogout } from "react-icons/ci";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import { SlCallIn } from "react-icons/sl";
 const Sidebar = () => {
   return (
     <>
@@ -57,6 +58,7 @@ const Sidebar = () => {
         </Link>
         <Link to={"/contact"}>
           <div className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white">
+            <SlCallIn size={22} />
             <span className="text-[15px] ml-4 text-gray-200 font-bold">
               Contact us
             </span>

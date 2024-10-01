@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
+import { toast } from "react-toastify";
+import { api } from "../config";
 
 const CreatePost = () => {
   const currentuser = useSelector(selectCurrentUser);
@@ -21,10 +23,9 @@ const CreatePost = () => {
     if (image) {
       formData.append("image", image); // Append image file
     }
-    console.log(formData);
 
     try {
-      const response = await fetch("http://192.168.1.77:3000/api/posts", {
+      const response = await fetch(`${api.url}/posts`, {
         method: "POST",
         body: formData,
         headers: {
@@ -37,7 +38,10 @@ const CreatePost = () => {
       }
 
       const result = await response.json();
-      console.log("Post created:", result);
+      toast.success("Post created successfully", {
+        position: "top-right",
+        theme: "dark",
+      });
       // Reset the form or handle success as needed
       setContent("");
       setImage(null);

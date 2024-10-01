@@ -1,17 +1,23 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { createUserAsync } from "../features/auth/authSlice";
-import { useDispatch } from "react-redux";
+import { Link, Navigate } from "react-router-dom";
+import { createUserAsync, selectCurrentUser } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+  if (currentUser) {
+    return <Navigate to={"/sign-in"} replace={true}></Navigate>;
+  }
+
   const handleForm = (data) => {
     const userData = {
       first_name: data.first_name,

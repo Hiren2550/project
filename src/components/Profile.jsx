@@ -59,9 +59,7 @@ const Profile = () => {
               </div>
             </div>
             <div className="ml-4 flex-grow mt-5">
-              <h2 className="text-2xl font-bold">
-                {user.username}-{user.us}
-              </h2>
+              <h2 className="text-2xl font-bold">{user.username}</h2>
               <button className="mt-2 bg-blue-500 text-white rounded px-4 py-1">
                 Edit Profile
               </button>

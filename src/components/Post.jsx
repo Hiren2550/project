@@ -5,13 +5,11 @@ import { FaRegComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { api } from "../config";
-import PostSkeleton from "../Skeleton/PostSkeleton";
 import ImageSkeleton from "../Skeleton/ImageSkeleton";
 import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
   const currentuser = useSelector(selectCurrentUser);
-
   const { token } = currentuser;
   const [loading, setLoading] = useState(true);
   const [toggle, setToggle] = useState(false);
@@ -54,7 +52,6 @@ const Post = ({ post }) => {
     e.preventDefault();
     try {
       clearTimeout(time);
-
       time = setTimeout(async () => {
         const res = await fetch(`${api.url}/likes/post/${post.id}`, {
           method: "POST",
@@ -74,6 +71,7 @@ const Post = ({ post }) => {
       setLike(like - 1);
     }
   };
+
   return (
     <>
       <div className="max-w-md mx-auto bg-white   my-5 py-2">
@@ -110,13 +108,25 @@ const Post = ({ post }) => {
         <div className="flex justify-between items-center  py-2 px-2">
           <div className="flex space-x-3 justify-center items-center">
             {!toggle && (
-              <CiHeart size={28} onClick={(e) => handleLike(e, post?.postd)} />
+              <CiHeart
+                size={28}
+                onClick={(e) => handleLike(e, post?.postd)}
+                className="cursor-pointer"
+              />
             )}
             {toggle && (
-              <FcLike size={28} onClick={(e) => handleLike(e, post?.id)} />
+              <FcLike
+                size={28}
+                onClick={(e) => handleLike(e, post?.id)}
+                className="cursor-pointer"
+              />
             )}
 
-            <FaRegComment size={26} onClick={handleComment} />
+            <FaRegComment
+              size={26}
+              onClick={handleComment}
+              className="cursor-pointer"
+            />
           </div>
         </div>
 
@@ -162,12 +172,15 @@ const Post = ({ post }) => {
                 </button>
               </form>
               {comment &&
-                comment.map((comment) => (
+                comment.map((comment, index) => (
                   <article
                     key={comment.id}
                     className="p-6 text-base bg-white rounded-lg "
                   >
-                    <footer className="flex justify-between items-center mb-2">
+                    <footer
+                      key={index}
+                      className="flex justify-between items-center mb-2"
+                    >
                       <div className="flex items-center">
                         <div className="inline-flex items-center mr-3 text-sm text-gray-900  font-semibold">
                           <div className="bg-slate-500 border flex items-center justify-center text-white h-12 w-12 rounded-full mr-2 ">
