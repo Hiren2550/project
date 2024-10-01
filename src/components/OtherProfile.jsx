@@ -25,7 +25,7 @@ const OtherProfile = () => {
       const result = await res.json();
 
       setPosts(result.post);
-      console.log(result.user);
+      setUser(result.user);
 
       setLoading(false);
     } catch (error) {
@@ -55,18 +55,13 @@ const OtherProfile = () => {
               </div>
             </div>
             <div className="ml-4 flex-grow mt-5">
-              <h2 className="text-2xl font-bold">
-                {user.username}-{user.us}
-              </h2>
-              <button className="mt-2 bg-blue-500 text-white rounded px-4 py-1">
-                Edit Profile
-              </button>
+              <h2 className="text-2xl font-bold">{user?.username}</h2>
               <div className="flex mt-2 space-x-6">
                 <span className="font-semibold">
-                  <strong>{user.posts}</strong> posts
+                  <strong>{posts?.length}</strong> posts
                 </span>
               </div>
-              <p className="mt-2 text-gray-600">{user.bio}</p>
+              <p className="mt-2 text-gray-600">Just another Instagram user.</p>
             </div>
           </div>
 
@@ -79,19 +74,20 @@ const OtherProfile = () => {
 
           {/* Posts Grid */}
           <div className="grid grid-cols-3 gap-4">
-            {user.postsData.map((post, index) => (
-              <div key={index} className="relative w-full h-0 pb-[100%]">
-                {loading && <ImageSkeleton />}
-                <Link to={`/user-post/${currentuser.user.id}`}>
-                  <img
-                    src={post.image_url}
-                    alt={`Post ${index}`}
-                    onLoad={() => setLoading(false)}
-                    className="absolute inset-0 w-full h-full object-cover "
-                  />
-                </Link>
-              </div>
-            ))}
+            {posts &&
+              posts.map((post, index) => (
+                <div key={index} className="relative w-full h-0 pb-[100%]">
+                  {loading && <ImageSkeleton />}
+                  <Link to={`/user-post/${user?.id}`}>
+                    <img
+                      src={post?.image_url}
+                      alt={`Post ${index}`}
+                      onLoad={() => setLoading(false)}
+                      className="absolute inset-0 w-full h-full object-cover "
+                    />
+                  </Link>
+                </div>
+              ))}
           </div>
         </div>
       )}

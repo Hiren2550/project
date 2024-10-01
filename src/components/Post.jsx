@@ -89,7 +89,9 @@ const Post = ({ post }) => {
             </Link>
           </div>
           <div className="ml-3">
-            <p className="font-bold">{post?.user?.username}</p>
+            <Link to={`/other-profile/${post?.user?.id}`}>
+              <p className="font-bold">{post?.user?.username}</p>
+            </Link>
           </div>
         </div>
 
@@ -167,7 +169,7 @@ const Post = ({ post }) => {
                   >
                     <footer className="flex justify-between items-center mb-2">
                       <div className="flex items-center">
-                        <p className="inline-flex items-center mr-3 text-sm text-gray-900  font-semibold">
+                        <div className="inline-flex items-center mr-3 text-sm text-gray-900  font-semibold">
                           <div className="bg-slate-500 border flex items-center justify-center text-white h-12 w-12 rounded-full mr-2 ">
                             <span className="text-xl">
                               {comment?.user?.username?.at(0).toUpperCase() ||
@@ -177,7 +179,7 @@ const Post = ({ post }) => {
                             </span>
                           </div>
                           {currentuser?.user?.username}
-                        </p>
+                        </div>
                         <p className="text-sm text-gray-600 ">
                           <time
                             pubdate=""
