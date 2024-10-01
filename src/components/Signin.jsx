@@ -155,7 +155,7 @@ const Signin = () => {
                 </label>
                 <div className="relative flex items-center">
                   <input
-                    name="password"
+                    type="password"
                     {...register("password", {
                       required: {
                         value: true,

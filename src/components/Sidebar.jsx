@@ -11,11 +11,12 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../features/auth/authSlice";
 const Sidebar = () => {
   const dispatch = useDispatch();
+
   return (
     <>
       {/* component */}
 
-      <div className="sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[380px] overflow-y-auto text-center bg-gray-900">
+      <div className="hidden md:block sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[380px] overflow-y-auto text-center bg-gray-900">
         <div className="text-gray-100 text-xl">
           <div className="p-2.5 mt-1 flex items-center">
             <Link to={"/"}>

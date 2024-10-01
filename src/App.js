@@ -13,6 +13,7 @@ import UserPostListpage from "./pages/UserPostListpage";
 import OtherProfilepage from "./pages/OtherProfilepage";
 import PrivateRoute from "./components/PrivateRoute";
 import Notfound from "./components/Notfound";
+import UpdateUserpage from "./pages/UpdateUserpage.jsx";
 
 function App() {
   return (
@@ -74,6 +75,14 @@ function App() {
           element={
             <PrivateRoute>
               <Contactpage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/update-user"
+          element={
+            <PrivateRoute>
+              <UpdateUserpage />
             </PrivateRoute>
           }
         />

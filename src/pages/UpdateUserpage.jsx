@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import Updateuser from "../components/Updateuser";
 import Sidebar from "../components/Sidebar";
-import PostList from "../components/PostList";
-import { FaBars, FaTimes } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-const Homepage = () => {
+const UpdateUserpage = () => {
   return (
     <div className="lg:grid lg:grid-cols-3 flex flex-col ">
       <div className="hidden lg:block md:col-span-1 ">
@@ -12,10 +10,10 @@ const Homepage = () => {
       </div>
 
       <div className="col-span-1">
-        <PostList />
+        <Updateuser />
       </div>
     </div>
   );
 };
 
-export default Homepage;
+export default UpdateUserpage;
