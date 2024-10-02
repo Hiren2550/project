@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import Post from "./Post";
 import { api } from "../config";
 import PostListSkeleton from "../Skeleton/PostSkeleton";
+import { logOut } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const PostList = () => {
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
   const [load, setLoad] = useState(false);
 
@@ -11,10 +14,13 @@ const PostList = () => {
     try {
       setLoad(true);
       const res = await fetch(`${api.url}/posts`);
-      const data = await res.json();
+      if (res.status === 401) {
+        dispatch(logOut());
+      }
+      const result = await res.json();
       // console.log(data);
-      setPosts(data.post);
-      console.log(data);
+      setPosts(result.post);
+
       setLoad(false);
     } catch (error) {
       console.log(error);

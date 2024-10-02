@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut, selectCurrentUser } from "../features/auth/authSlice";
 import { api } from "../config";
 import ProfileSkeleton from "../Skeleton/ProfileSkeleton";
 import ImageSkeleton from "../Skeleton/ImageSkeleton";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const currentuser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
   const { token } = currentuser;
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [toggle, setToggle] = useState(false);
 
   const getPosts = async () => {
     setLoading(true);
@@ -20,9 +24,13 @@ const Profile = () => {
           Authorization: token,
         },
       });
+
+      if (res.status === 401) {
+        dispatch(logOut());
+      }
       const result = await res.json();
 
-      setPosts(result.post);
+      setPosts(result.data.post);
 
       setLoading(false);
     } catch (error) {
@@ -30,6 +38,34 @@ const Profile = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`${api.url}/users/${currentuser.user.id}`, {
+        method: "DELETE",
+
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        toast.success("user deleted successfully", {
+          position: "top-right",
+          theme: "dark",
+        });
+        dispatch(logOut());
+
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error("Error uploading post:", {
+        position: "top-right",
+        theme: "dark",
+      });
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     getPosts();
   }, []);
@@ -37,7 +73,7 @@ const Profile = () => {
   const user = {
     username: currentuser?.user?.username,
     bio: "Just another Instagram user.",
-    posts: posts.length,
+    posts: posts?.length,
     postsData: posts,
     // Add more post objects as needed
   };
@@ -60,11 +96,39 @@ const Profile = () => {
             </div>
             <div className="ml-4 flex-grow mt-5">
               <h2 className="text-2xl font-bold">{user.username}</h2>
-              <Link to={"/update-user"}>
-                <button className="mt-2 bg-blue-500 text-white rounded px-4 py-1 hover:underline">
-                  Edit Profile
-                </button>
-              </Link>
+              <div className="flex flex-row gap-2 items-center  ">
+                <Link to={"/update-user"}>
+                  <button className="mt-2 bg-blue-500 text-white rounded px-4 py-1 hover:underline">
+                    Edit Profile
+                  </button>
+                </Link>
+                <div className="relative">
+                  <BsThreeDotsVertical
+                    className="mt-2 cursor-pointer"
+                    size={26}
+                    onClick={() => {
+                      setToggle(!toggle);
+                    }}
+                  />
+                  {toggle && (
+                    <ul className="absolute top-7 left-2 w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                      <li className="w-full px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-gray-600 cursor-pointer">
+                        Profile
+                      </li>
+                      <li
+                        className="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-600 cursor-pointer"
+                        onClick={handleDelete}
+                      >
+                        delete
+                      </li>
+
+                      <li className="w-full px-4 py-2 rounded-b-lg cursor-pointer">
+                        Deactivate
+                      </li>
+                    </ul>
+                  )}
+                </div>
+              </div>
               <div className="flex mt-2 space-x-6">
                 <span className="font-semibold">
                   <strong>{user.posts}</strong> posts
@@ -83,7 +147,7 @@ const Profile = () => {
 
           {/* Posts Grid */}
           <div className="grid grid-cols-3 gap-4">
-            {user.postsData.map((post, index) => (
+            {user?.postsData?.map((post, index) => (
               <div key={index} className="relative w-full h-0 pb-[100%]">
                 {loading && <ImageSkeleton />}
                 <Link to={`/user-post/${currentuser.user.id}`}>

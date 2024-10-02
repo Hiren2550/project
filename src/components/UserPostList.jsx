@@ -21,9 +21,9 @@ const UserPostList = () => {
           Authorization: token,
         },
       });
-      const data = await res.json();
+      const result = await res.json();
       // console.log(data);
-      setPosts(data.post);
+      setPosts(result.data.post);
       setLoad(false);
     } catch (error) {
       console.log(error);

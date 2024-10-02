@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import avtar from "../images/avtar.jpg";
 import { api } from "../config";
 import { VscGlobe } from "react-icons/vsc";
+import { toast } from "react-toastify";
 
 const Updateuser = () => {
   const currentuser = useSelector(selectCurrentUser);
@@ -46,6 +47,10 @@ const Updateuser = () => {
       if (res.ok) {
         const result = await res.json();
         dispatch(update(result.data));
+        toast.success("user updated", {
+          position: "top-right",
+          theme: "dark",
+        });
       }
 
       setLoading(false);

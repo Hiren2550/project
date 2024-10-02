@@ -24,8 +24,8 @@ const OtherProfile = () => {
       });
       const result = await res.json();
 
-      setPosts(result.post);
-      setUser(result.user);
+      setPosts(result.data.post);
+      setUser(result.data.user);
 
       setLoading(false);
     } catch (error) {

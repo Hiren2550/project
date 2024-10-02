@@ -41,17 +41,19 @@ const CreatePost = () => {
         throw new Error("Network response was not ok");
       }
 
-      const result = await response.json();
-      toast.success("Post created successfully", {
-        position: "top-right",
-        theme: "dark",
-      });
+      if (response.ok) {
+        const result = await response.json();
+        toast.success("Post created successfully", {
+          position: "top-right",
+          theme: "dark",
+        });
 
-      setLoading(false);
-      // Reset the form or handle success as needed
-      setContent("");
-      setImage(null);
-      navigate("/profile");
+        setLoading(false);
+        // Reset the form or handle success as needed
+        setContent("");
+        setImage(null);
+        navigate("/profile");
+      }
     } catch (error) {
       // console.error("Error uploading post:", error);
       toast.error("Error uploading post:", {

@@ -22,7 +22,6 @@ export function loginUser(userData) {
           "content-type": "application/json",
         },
         body: JSON.stringify(userData),
-        credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();
