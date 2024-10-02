@@ -7,8 +7,12 @@ import ImageSkeleton from "../Skeleton/ImageSkeleton";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Modal from "./Model";
 
 const Profile = () => {
+  const [showModal, setShowModal] = React.useState(false);
+  const message = "Do you want to delete Your Account?";
+  const title = "Account Deletion";
   const currentuser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const { token } = currentuser;
@@ -79,6 +83,13 @@ const Profile = () => {
   };
   return (
     <>
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        message={message}
+        title={title}
+        fun={handleDelete}
+      />
       {loading ? (
         <ProfileSkeleton />
       ) : (
@@ -117,7 +128,7 @@ const Profile = () => {
                       </li>
                       <li
                         className="w-full px-4 py-2 border-b border-gray-200 dark:border-gray-600 cursor-pointer"
-                        onClick={handleDelete}
+                        onClick={() => setShowModal(true)}
                       >
                         delete
                       </li>
