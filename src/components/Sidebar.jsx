@@ -9,11 +9,25 @@ import { IoIosInformationCircleOutline } from "react-icons/io";
 import { SlCallIn } from "react-icons/sl";
 import { useDispatch } from "react-redux";
 import { logOut } from "../features/auth/authSlice";
+import Modal from "./Model";
 const Sidebar = () => {
   const dispatch = useDispatch();
-
+  const [showModal, setShowModal] = React.useState(false);
+  const message = "Do you want to log out?";
+  const title = "Log Out";
+  const handleLogOut = () => {
+    dispatch(logOut());
+  };
   return (
     <>
+      <Modal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        message={message}
+        title={title}
+        buttonMessage={"Log Out"}
+        fun={handleLogOut}
+      />
       {/* component */}
 
       <div className="hidden md:block sidebar fixed top-0 bottom-0 lg:left-0 p-2 w-[380px] overflow-y-auto text-center bg-gray-900">
@@ -71,7 +85,7 @@ const Sidebar = () => {
 
         <div
           className="p-2.5 mt-3 flex items-center rounded-md px-4 duration-300 cursor-pointer hover:bg-blue-600 text-white"
-          onClick={() => dispatch(logOut())}
+          onClick={() => setShowModal(true)}
         >
           <CiLogout size={28} />
 

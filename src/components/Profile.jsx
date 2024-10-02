@@ -89,6 +89,7 @@ const Profile = () => {
         message={message}
         title={title}
         fun={handleDelete}
+        buttonMessage={"DELETE"}
       />
       {loading ? (
         <ProfileSkeleton />

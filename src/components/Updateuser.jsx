@@ -4,7 +4,6 @@ import { selectCurrentUser, update } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import avtar from "../images/avtar.jpg";
 import { api } from "../config";
-import { VscGlobe } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
 const Updateuser = () => {
@@ -77,6 +76,7 @@ const Updateuser = () => {
                 First Name
               </label>
               <input
+                disabled={loading ? true : false}
                 className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow dark:bg-gray-600 dark:text-gray-100"
                 {...register("first_name", {
                   required: {
@@ -95,6 +95,7 @@ const Updateuser = () => {
                 Last Name
               </label>
               <input
+                disabled={loading ? true : false}
                 className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow dark:bg-gray-600 dark:text-gray-100"
                 {...register("last_name", {
                   required: {
@@ -113,6 +114,7 @@ const Updateuser = () => {
                 User Name
               </label>
               <input
+                disabled={loading ? true : false}
                 className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow dark:bg-gray-600 dark:text-gray-100"
                 {...register("username", {
                   required: {
@@ -129,6 +131,7 @@ const Updateuser = () => {
             <div>
               <label className="text-gray-600 dark:text-gray-400">Email</label>
               <input
+                disabled={loading ? true : false}
                 className="w-full py-3 border border-slate-200 rounded-lg px-3 focus:outline-none focus:border-slate-500 hover:shadow dark:bg-gray-600 dark:text-gray-100"
                 {...register("email", {
                   required: { value: true, message: "email is required" },

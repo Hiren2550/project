@@ -69,6 +69,7 @@ const CreatePost = () => {
       <h2 className="text-xl font-semibold mb-4">Create a Post</h2>
       <form onSubmit={handleSubmit}>
         <textarea
+          disabled={loading ? true : false}
           className="w-full h-24 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           placeholder="What's on your mind?"
           value={content}
@@ -77,6 +78,7 @@ const CreatePost = () => {
         ></textarea>
 
         <input
+          disabled={loading ? true : false}
           type="file"
           accept="image/*"
           onChange={handleImageChange}
